@@ -12,40 +12,7 @@ plugins {
 	id("com.vanniktech.maven.publish") version "0.27.0"
 }
 
-fun shouldPublish() = System.getenv("PUBLISH")?.toBooleanLenient() == true
 
-fun getEnvValue(name: String) = System.getenv(name) ?: throw Exception("$name not given")
-
-publishing {
-	if (!shouldPublish()) return@publishing
-	repositories {
-		maven {
-			url = uri(getEnvValue("REGISTRY_URL"))
-			credentials {
-				username = getEnvValue("REGISTRY_USERNAME")
-				password = getEnvValue("REGISTRY_PASSWORD")
-			}
-		}
-	}
-}
-
-mavenPublishing {
-	if (!shouldPublish()) return@mavenPublishing
-	coordinates("com.swapindo", "calendar", "1.1.0")
-
-	pom {
-		name.set(project.name)
-		description.set("Calendar for Swapindo.")
-		inceptionYear.set("2024")
-		scm {
-			val projectLocation = "github.com/${getEnvValue("GITHUB_REPOSITORY")}"
-
-			url.set("https://$projectLocation")
-			connection.set("scm:git:git://$projectLocation.git")
-			developerConnection.set("scm:git:ssh://git@$projectLocation.git")
-		}
-	}
-}
 
 kotlin {
 	androidTarget {
@@ -159,5 +126,40 @@ compose.desktop {
 
 compose.experimental {
 	web.application {}
+}
+
+fun shouldPublish() = System.getenv("PUBLISH")?.toBooleanLenient() == true
+
+fun getEnvValue(name: String) = System.getenv(name) ?: throw Exception("$name not given")
+
+publishing {
+	if (!shouldPublish()) return@publishing
+	repositories {
+		maven {
+			url = uri(getEnvValue("REGISTRY_URL"))
+			credentials {
+				username = getEnvValue("REGISTRY_USERNAME")
+				password = getEnvValue("REGISTRY_PASSWORD")
+			}
+		}
+	}
+}
+
+mavenPublishing {
+	if (!shouldPublish()) return@mavenPublishing
+	coordinates("com.swapindo", "calendar", "1.1.0")
+
+	pom {
+		name.set(project.name)
+		description.set("Calendar for Swapindo.")
+		inceptionYear.set("2024")
+		scm {
+			val projectLocation = "github.com/${getEnvValue("GITHUB_REPOSITORY")}"
+
+			url.set("https://$projectLocation")
+			connection.set("scm:git:git://$projectLocation.git")
+			developerConnection.set("scm:git:ssh://git@$projectLocation.git")
+		}
+	}
 }
 
