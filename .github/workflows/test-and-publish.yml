@@ -39,5 +39,3 @@ jobs:
           echo "Publishing and Releasing library 🚀"
           ./gradlew publish
           ./gradlew printPackageName
-        env:
-          ANDROID_HOME: /Users/gh-runner/Android/sdk
