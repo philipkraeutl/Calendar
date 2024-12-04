@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,35 +12,39 @@ plugins {
 	id("com.vanniktech.maven.publish") version "0.27.0"
 }
 
-mavenPublishing {
-	coordinates("io.github.wojciechosak", "calendar")
-	pom {
-		name.set("KMP Calendar")
-		description.set("Kotlin Compose Multiplatform UI library that simplifies usage of calendar views")
-		inceptionYear.set("2024")
-		url.set("https://github.com/wojciechosak/calendar/")
-		licenses {
-			license {
-				name.set("GPL-3.0 License")
-				url.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
-				distribution.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
+fun shouldPublish() = System.getenv("PUBLISH")?.toBooleanLenient() == true
+
+fun getEnvValue(name: String) = System.getenv(name) ?: throw Exception("$name not given")
+
+publishing {
+	if (!shouldPublish()) return@publishing
+	repositories {
+		maven {
+			url = uri(getEnvValue("REGISTRY_URL"))
+			credentials {
+				username = getEnvValue("REGISTRY_USERNAME")
+				password = getEnvValue("REGISTRY_PASSWORD")
 			}
-		}
-		developers {
-			developer {
-				id.set("wojciech.osak")
-				name.set("Wojciech Osak")
-				url.set("https://github.com/wojciechosak/")
-			}
-		}
-		scm {
-			url.set("https://github.com/wojciechosak/calendar/")
-			connection.set("scm:git:git://github.com/wojciechosak/calendar.git")
-			developerConnection.set("scm:git:ssh://git@github.com/wojciechosak/calendar.git")
 		}
 	}
-	publishToMavenCentral(SonatypeHost.S01)
-	signAllPublications()
+}
+
+mavenPublishing {
+	if (!shouldPublish()) return@mavenPublishing
+	coordinates("com.swapindo", "calendar", "1.1.0")
+
+	pom {
+		name.set(project.name)
+		description.set("Calendar for Swapindo.")
+		inceptionYear.set("2024")
+		scm {
+			val projectLocation = "github.com/${getEnvValue("GITHUB_REPOSITORY")}"
+
+			url.set("https://$projectLocation")
+			connection.set("scm:git:git://$projectLocation.git")
+			developerConnection.set("scm:git:ssh://git@$projectLocation.git")
+		}
+	}
 }
 
 kotlin {
