@@ -9,7 +9,8 @@ jobs:
   build_and_test:
     name: Build & Test
     #runs-on: macos-13, self-hosted
-    runs-on: self-hosted
+    #runs-on: self-hosted
+    runs-on: macos-13
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
