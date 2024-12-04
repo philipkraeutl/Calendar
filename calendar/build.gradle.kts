@@ -17,6 +17,7 @@ plugins {
 kotlin {
 	androidTarget {
 		publishLibraryVariants("release")
+/*
 		compilations.all {
 			compileTaskProvider {
 				compilerOptions {
@@ -24,7 +25,7 @@ kotlin {
 					freeCompilerArgs.add("-Xjdk-release=${JavaVersion.VERSION_1_8}")
 				}
 			}
-		}
+		}*/
 	}
 
 	jvm()
