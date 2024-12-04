@@ -99,8 +99,8 @@ android {
 		resources.srcDirs("src/commonMain/resources")
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 	}
 	buildFeatures {
 		compose = true
@@ -108,9 +108,7 @@ android {
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
 	}
-	kotlin {
-		jvmToolchain(17)
-	}
+
 }
 
 compose.desktop {
