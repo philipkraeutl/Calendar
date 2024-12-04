@@ -49,6 +49,7 @@ mavenPublishing {
 
 kotlin {
 	androidTarget {
+		publishLibraryVariants("release")
 		compilations.all {
 			compileTaskProvider {
 				compilerOptions {
@@ -138,6 +139,9 @@ android {
 	}
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+	}
+	kotlin {
+		jvmToolchain(17)
 	}
 }
 
